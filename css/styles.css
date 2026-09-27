@@ -1,0 +1,515 @@
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #f3eee8;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+}
+
+body {
+    color: #342d29;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+header {
+    flex: 0 0 auto;
+    background: #7d5a50;
+    color: white;
+
+    padding:
+        max(10px, env(safe-area-inset-top))
+        10px
+        10px
+        12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    z-index: 20;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #4b3933;
+
+    min-height: 42px;
+    padding: 8px 11px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+button:active {
+    transform: scale(.96);
+}
+
+button.primary {
+    background: #e5b98c;
+    color: #34251f;
+}
+
+button.dark {
+    background: #59413a;
+    color: white;
+}
+
+button.danger {
+    background: #b95f5f;
+    color: white;
+}
+
+button.active {
+    background: #d69a70;
+    color: white;
+}
+
+#controls {
+    flex: 0 0 auto;
+
+    background: #fffaf6;
+    border-bottom: 1px solid #ded3cb;
+
+    padding: 7px;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    z-index: 15;
+}
+
+#controls::-webkit-scrollbar {
+    display: none;
+}
+
+#controls button {
+    flex: 0 0 auto;
+}
+
+.file-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+    padding: 8px 11px;
+
+    background: #7d5a50;
+    color: white;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+#pdfInput,
+#importBackup {
+    display: none;
+}
+
+#rowCounter {
+    flex: 0 0 auto;
+
+    background: #eadfd7;
+    border-bottom: 1px solid #d7c8bf;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+    padding: 7px;
+
+    z-index: 15;
+}
+
+.row-label {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.row-number {
+    min-width: 55px;
+    text-align: center;
+
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.counter-button {
+    width: 46px;
+    height: 42px;
+
+    padding: 0;
+
+    font-size: 26px;
+    line-height: 1;
+
+    background: #fff;
+    border: 1px solid #cdbdb3;
+}
+
+#viewerFrame {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+#viewer {
+    height: 100%;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    touch-action: pan-y;
+
+    -webkit-overflow-scrolling: touch;
+
+    padding: 14px 28px 100px 8px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #eee7e1 0,
+            #e3d9d1 100%
+        );
+}
+
+#viewer::-webkit-scrollbar {
+    display: none;
+}
+
+#viewerScrollbarTrack {
+    position: absolute;
+    top: 8px;
+    right: 2px;
+    bottom: 8px;
+    width: 18px;
+
+    z-index: 5;
+
+    background: #eadfd7;
+    border: 1px solid #d7c8bf;
+    border-radius: 9px;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+#viewerScrollbarTrack.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#viewerScrollbarThumb {
+    position: absolute;
+    top: 0;
+    left: 2px;
+
+    width: 12px;
+    min-height: 36px;
+
+    background: #7d5a50;
+    border-radius: 7px;
+
+    cursor: grab;
+    touch-action: none;
+}
+
+#viewerScrollbarThumb:hover,
+#viewerScrollbarThumb:focus-visible {
+    background: #59413a;
+}
+
+#viewerScrollbarThumb:focus-visible {
+    outline: 2px solid #342d29;
+    outline-offset: 1px;
+}
+
+#pages {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 18px;
+}
+
+body.zoomed #viewer {
+    overflow-x: auto;
+    touch-action: pan-x pan-y;
+}
+
+body.zoomed #pages {
+    width: max-content;
+    min-width: 100%;
+    align-items: flex-start;
+}
+
+body.zoomed:not(.drawing-mode) .page-wrapper {
+    max-width: none;
+    touch-action: pan-x pan-y;
+}
+
+body.zoomed:not(.drawing-mode) .drawing-canvas {
+    touch-action: pan-x pan-y;
+}
+
+.page-wrapper {
+    position: relative;
+
+    background: white;
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.22);
+
+    max-width: 100%;
+
+    touch-action: pan-y;
+}
+
+.pdf-page {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.drawing-canvas {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    touch-action: pan-y;
+}
+
+body.drawing-mode .page-wrapper,
+body.drawing-mode .drawing-canvas {
+    touch-action: none;
+}
+
+.page-number {
+    position: absolute;
+
+    top: 6px;
+    right: 6px;
+
+    padding: 3px 7px;
+
+    border-radius: 8px;
+
+    background: rgba(0,0,0,.55);
+    color: white;
+
+    font-size: 11px;
+
+    z-index: 3;
+    pointer-events: none;
+}
+
+#emptyState {
+    min-height: 60vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px;
+
+    color: #76665e;
+}
+
+.empty-box {
+    max-width: 340px;
+}
+
+.empty-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.empty-box h2 {
+    margin: 0 0 8px;
+    color: #4b3933;
+}
+
+.empty-box p {
+    line-height: 1.5;
+}
+
+#drawingTools {
+    position: fixed;
+
+    left: 50%;
+    bottom: max(12px, env(safe-area-inset-bottom));
+
+    transform: translateX(-50%);
+
+    background: rgba(55, 43, 38, .96);
+    color: white;
+
+    border-radius: 18px;
+
+    padding: 8px;
+
+    display: none;
+    align-items: center;
+    gap: 6px;
+
+    z-index: 50;
+
+    box-shadow:
+        0 4px 20px rgba(0,0,0,.3);
+}
+
+#drawingTools.visible {
+    display: flex;
+}
+
+#drawingTools button {
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+
+    padding: 5px;
+
+    background: #75615a;
+    color: white;
+}
+
+#drawingTools button.active {
+    background: #d69a70;
+}
+
+#brushSize {
+    width: 75px;
+}
+
+#penColor {
+    width: 42px;
+    height: 42px;
+
+    padding: 3px;
+
+    border-radius: 10px;
+    border: none;
+    background: white;
+}
+
+#saveStatus {
+    position: fixed;
+    pointer-events: none;
+
+    right: 10px;
+    bottom: 10px;
+
+    z-index: 40;
+
+    background: rgba(55,43,38,.85);
+    color: white;
+
+    padding: 5px 9px;
+
+    border-radius: 8px;
+
+    font-size: 11px;
+
+    opacity: 0;
+
+    transition: opacity .2s;
+}
+
+#saveStatus.visible {
+    opacity: 1;
+}
+
+body.landscape-mode #app {
+    transform: rotate(90deg);
+
+    width: 100vh;
+    height: 100vw;
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform-origin: center center;
+
+    translate: -50% -50%;
+}
+
+@media (max-width: 420px) {
+
+    .title {
+        font-size: 16px;
+    }
+
+    button,
+    .file-label {
+        font-size: 13px;
+    }
+
+    .row-number {
+        font-size: 24px;
+    }
+}
+
+.file-label.dark {
+    background: #59413a;
+}
